@@ -8,7 +8,7 @@ test:
 	go test -v ./...
 
 migrate:
-	migrate -path ./schema -database 'postgres://postgres:test@0.0.0.0:5436/music-lib?sslmode=disable' up
+	migrate -path ./schema -database 'postgres://postgres:test@0.0.0.0:5436/postgres?sslmode=disable' up
 
 swag:
 	swag init -g cmd/main.go
