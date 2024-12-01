@@ -1,0 +1,302 @@
+basePath: /
+definitions:
+  handler.errorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  handler.statusResponse:
+    properties:
+      status:
+        type: string
+    type: object
+  song.Song:
+    properties:
+      artist:
+        type: string
+      id:
+        type: integer
+      link:
+        type: string
+      name:
+        type: string
+      release_date:
+        type: string
+      text:
+        type: string
+    type: object
+  song.SongInput:
+    properties:
+      artist:
+        type: string
+      id:
+        type: integer
+      link:
+        type: string
+      name:
+        type: string
+      release_date:
+        type: string
+      text:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  title: Music Lib API
+  version: "1.0"
+paths:
+  /api/songs:
+    get:
+      consumes:
+      - application/json
+      description: get all songs
+      operationId: get-all-songs
+      parameters:
+      - description: song name
+        in: query
+        name: name
+        type: string
+      - description: song artist
+        in: query
+        name: artist
+        type: string
+      - description: song release date
+        in: query
+        name: release_date
+        type: string
+      - description: song text
+        in: query
+        name: text
+        type: string
+      - description: song link
+        in: query
+        name: link
+        type: string
+      - description: limit songs
+        in: query
+        name: limit
+        type: integer
+      - description: selected page
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/song.SongInput'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get All Songs
+      tags:
+      - songs
+    post:
+      consumes:
+      - application/json
+      description: add song to database
+      operationId: add-song
+      parameters:
+      - description: song info
+        in: body
+        name: song
+        required: true
+        schema:
+          $ref: '#/definitions/song.Song'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: New song ID
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Add Song
+      tags:
+      - songs
+  /api/songs/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete song
+      operationId: delete-song
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/song.Song'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Delete Song
+      tags:
+      - songs
+    get:
+      consumes:
+      - application/json
+      description: get song by id
+      operationId: get-song-by-id
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/song.Song'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get Song By ID
+      tags:
+      - songs
+    put:
+      consumes:
+      - application/json
+      description: update song
+      operationId: update-song
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: New song info
+        in: body
+        name: song
+        required: true
+        schema:
+          $ref: '#/definitions/song.SongInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Update Song
+      tags:
+      - songs
+  /api/songs/{id}/text:
+    get:
+      consumes:
+      - application/json
+      description: get song text
+      operationId: get-song-text
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Song text
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get Song Text
+      tags:
+      - songs
+swagger: "2.0"
